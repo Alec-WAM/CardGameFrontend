@@ -1,0 +1,10 @@
+<div class="card-container" [class.flipped]="flipped" (click)="flipCard()">
+  <div class="card">
+    <div class="card-front">
+      <img [src]="cardSvg" alt="card" />
+    </div>
+    <div class="card-back">
+      <img src="assets/images/card_icons/back_red.svg" alt="back" />
+    </div>
+  </div>
+</div>
