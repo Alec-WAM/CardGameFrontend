@@ -1,0 +1,17 @@
+<div class="full-screen-page">
+    @if(this.gameService.currentRoom$ | async; as room){
+        <!-- Room Header -->
+        <div class="flex flex-row w-full h-10 px-2 justify-between items-center bg-primary text-color font-bold">
+            <span>Room: {{this.roomCode}}</span>
+            <span>Players: {{room.players.length}}</span>
+        </div>
+
+        <div class="flex flex-row h-full w-full">            
+            @if(this.gameService.isRoomHost()){
+                <div class="absolute top-12 right-2">
+                    <app-room-settings-component></app-room-settings-component>
+                </div>
+            }
+        </div>
+    }
+</div>

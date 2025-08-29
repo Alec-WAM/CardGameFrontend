@@ -1,0 +1,30 @@
+<div class="full-screen-page items-center justify-center">
+    <div class="flex flex-row gap-2 h-1/4">
+        <div class="flex flex-col gap-2 items-center justify-center">
+            <span class="text-2xl text-center fond-bold">Create Room</span>
+            
+            <p-iftalabel>
+                <input type="text" id="createRoomPassword" pInputText [(ngModel)]="this.createRoomPassword" />
+                <label for="createRoomPassword">Room Password</label>
+            </p-iftalabel>
+            
+            <p-button label="Create Room" severity="success" (onClick)="this.createRoom()"/>
+        </div>
+        <p-divider layout="vertical" />
+        <div class="flex flex-col gap-2 items-center justify-center">
+            <span class="text-2xl text-center fond-bold">Join Room</span>
+            
+            <p-iftalabel>
+                <input type="text" id="joinRoomCode" pInputText [(ngModel)]="this.joinRoomCode" />
+                <label for="joinRoomCode">Room Code</label>
+            </p-iftalabel>
+            
+            <p-iftalabel>
+                <input type="text" id="joinRoomPassword" pInputText [(ngModel)]="this.joinRoomPassword" />
+                <label for="joinRoomPassword">Room Password</label>
+            </p-iftalabel>
+            
+            <p-button label="Join Room" (onClick)="this.joinRoom()"/>
+        </div>
+    </div>
+</div>
