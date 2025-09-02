@@ -1,4 +1,4 @@
-import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { io, Socket } from 'socket.io-client';
 import { GameCard, GameState } from '../api/GameStatus';
@@ -15,6 +15,9 @@ export class GameService {
 
   public gameState: WritableSignal<GameState | undefined> = signal(undefined);
   public gameState$ = toObservable(this.gameState);
+
+  public playerSeats: Signal<Record<string, number>> = computed(() => this.assignSeats(this.getPlayers(), this.socket.id));
+  public playerSeats$ = toObservable(this.playerSeats);
 
   public isRoomHost = computed(() => 
     this.currentRoom() !=null && this.currentRoom()!.hostId === this.socket?.id
@@ -125,5 +128,26 @@ export class GameService {
 
   getPlayerHand(playerId: string): GameCard[] | undefined {
     return this.gameState()?.hands[playerId];
+  }
+
+  assignSeats(players: PlayerInfo[], currentPlayerId: string | undefined): Record<string, number> {
+    const seats: Record<string, number> = {};
+
+    if(!currentPlayerId) {
+      return seats;
+    }
+
+    // current player always center-bottom
+    const currentIndex = players.findIndex(p => p.id === currentPlayerId);
+    const otherPlayers = players.filter(p => p.id !== currentPlayerId);
+
+    seats[players[currentIndex].id] = 0;
+
+    // assign remaining players starting from closest to center
+    for (let i = 0; i < otherPlayers.length; i++) {
+      seats[otherPlayers[i].id] = i + 1;
+    }
+
+    return seats;
   }
 }
