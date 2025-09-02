@@ -1,21 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, input, model } from '@angular/core';
 import { CARD_SVGS, CardID } from '../../api/CardType';
 
 @Component({
   selector: 'app-card-component',
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './card-component.html',
   styleUrl: './card-component.css'
 })
 export class CardComponent {
-  @Input() cardId!: CardID;
-  flipped = false;
+  cardId = input.required<CardID>();
+  flipped = model(false);
 
   get cardSvg(): string {
-    return CARD_SVGS[this.cardId];
+    return CARD_SVGS[this.cardId()];
   }
 
   flipCard() {
-    this.flipped = !this.flipped;
+    this.flipped.update((oldValue) => !oldValue);
   }
 }

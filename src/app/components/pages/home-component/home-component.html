@@ -1,4 +1,11 @@
-<div class="full-screen-page items-center justify-center">
+<div class="full-screen-page items-center justify-center flex flex-col">
+    <div class="flex flex-row gap-2">
+        <p-iftalabel>
+            <input type="text" id="playerName" pInputText [(ngModel)]="this.playerName" />
+            <label for="playerName">Username</label>
+        </p-iftalabel>
+    </div>
+    
     <div class="flex flex-row gap-2 h-1/4">
         <div class="flex flex-col gap-2 items-center justify-center">
             <span class="text-2xl text-center fond-bold">Create Room</span>

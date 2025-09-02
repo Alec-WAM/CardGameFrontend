@@ -1,5 +1,10 @@
 export interface RoomInfo {
     password: string;
-    players: string[];
+    players: PlayerInfo[];
     hostId: string;
+}
+
+export interface PlayerInfo {
+    id: string;
+    name: string;
 }

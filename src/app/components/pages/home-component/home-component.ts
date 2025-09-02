@@ -24,6 +24,8 @@ export class HomeComponent {
   readonly gameService = inject(GameService);
   readonly router = inject(Router);
 
+  playerName: string | undefined;
+
   createRoomPassword: string | undefined;
 
   joinRoomCode: string | undefined;
@@ -31,7 +33,7 @@ export class HomeComponent {
 
   public createRoom(): void {
     if(this.createRoomPassword) {      
-      this.gameService.createRoom(this.createRoomPassword)
+      this.gameService.createRoom(this.createRoomPassword, this.playerName)
       .then((roomCode) => this.router.navigate(['room', roomCode]))
       .catch((err) => console.error(err));
     }
@@ -39,7 +41,7 @@ export class HomeComponent {
 
   public joinRoom(): void {
     if(this.joinRoomCode && this.joinRoomPassword) {
-      this.gameService.joinRoom(this.joinRoomCode, this.joinRoomPassword)
+      this.gameService.joinRoom(this.joinRoomCode, this.joinRoomPassword, this.playerName)
       .then(() => this.router.navigate(['room', this.joinRoomCode]))
       .catch((err) => console.error(err));
     }

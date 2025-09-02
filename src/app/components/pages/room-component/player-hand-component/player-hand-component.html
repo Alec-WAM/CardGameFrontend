@@ -1,0 +1,44 @@
+<div class="flex flex-col gap-2">
+    @if(this.isDealer()){
+        <span class="font-bold">Dealer</span>
+    }
+    @else {
+        <span class="font-bold">Player: {{this.playerInfo()!.name}}</span>
+    }
+    @if(this.playerHand$ | async; as playerHand){
+        <div class="flex flex-row gap-2 relative" style="height: 150px;">
+            @for(card of playerHand; track card.cardId;){
+                <app-card-component 
+                    [cardId]="card.cardId" 
+                    [(flipped)]="card.flipped"
+                    [ngStyle]="{
+                        top: '50%',
+                        left: '50%',
+                        transform: 
+                        'translate(-50%, -50%) translateX(' 
+                        + (($index - ($count - 1) / 2) * 20) + 'px)',
+                        position: 'absolute'
+                    }"
+                >
+                </app-card-component>
+            }
+        </div>
+    }
+    
+    @if(gameService.gameState$ | async; as gameState){
+        @if(this.playerInfo()){
+            @if(gameState.playerStatus[this.playerInfo()!.id]){
+                <div class="flex flex-col gap-2 text-center">
+                    <span class="font-bold">{{gameState.playerStatus[this.playerInfo()!.id].state}}</span>
+                    <span class="font-bold">{{gameState.playerStatus[this.playerInfo()!.id].points}}</span>
+                </div>
+            }
+        }
+        @else if(this.isDealer()){
+            <div class="flex flex-col gap-2 text-center">
+                <span class="font-bold">{{gameState.dealerStatus.state}}</span>
+                <span class="font-bold">{{gameState.dealerStatus.points}}</span>
+            </div>
+        }
+    }
+</div>

@@ -6,14 +6,59 @@
             <span>Players: {{room.players.length}}</span>
         </div>
 
-        <div class="flex flex-row h-full w-full">            
+        <div class="flex flex-col h-full w-full">            
             @if(this.gameService.isRoomHost()){
                 <div class="absolute top-12 right-2">
                     <app-room-settings-component></app-room-settings-component>
                 </div>
             }
 
-            <app-card-component [cardId]="CardID.ACE_CLUBS"></app-card-component>
+            @if(this.gameService.gameState$ | async; as gameState){
+                <!-- Dealer -->
+                <div class="flex flex-col w-full h-1/2">
+                    <div class="flex flex-row w-full h-full justify-around items-center">
+                        <app-player-hand-component [isDealer]="true"></app-player-hand-component>
+                    </div>
+                </div>
+
+                <!-- Player Hands -->
+                <div class="flex flex-col w-full h-3/4">
+                    <div class="flex flex-row w-full h-full justify-around items-center">
+                        @for(playerInfo of this.gameService.getPlayers(); track playerInfo.id){
+                            @if(playerInfo.id){
+                                <app-player-hand-component [playerInfo]="playerInfo"></app-player-hand-component>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-row w-full h-20">
+                    @if(!gameState.gameStarted){                        
+                        <div class="flex flex-row w-full h-full justify-center gap-2 items-center">
+                            @if(this.gameService.isRoomHost()){
+                                <p-button label="Start Next Round" (onClick)="this.startGame()"></p-button>
+                            }
+                            @else {
+                                <span>Waiting for host to start game</span>
+                            }
+                        </div>
+                    }
+                    @else {                    
+                        <div class="flex flex-row w-full h-full justify-center gap-2 items-center">
+                            <p-button label="Hit" styleClass="w-30" severity="success" (onClick)="this.hit()" [disabled]="!this.canHit()"></p-button>
+                            <p-button label="Stand" styleClass="w-30" severity="warn" (onClick)="this.stand()" [disabled]="!this.canStand()"></p-button>
+                        </div>
+                    }
+                </div>
+            }
+            @else {
+                <span>Game not started</span>
+
+                @if(this.gameService.isRoomHost()){
+                    <p-button label="Start Game" (onClick)="this.startGame()"></p-button>
+                }
+            }
         </div>
     }
 </div>
